@@ -8,5 +8,5 @@ The results of the code should be looks like (four seperate figures):
 Update 2023/11/14
 * added the function: set a condition: the point with SPI>-1 cannot be a core point.
 * Changes: modified the source code from https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/cluster/_dbscan.py (renamed as _dbscanDR.py)
-* To use: change the [__init__.py] file and add the [_dbscanDR.py] within the [cluster] folder (mine is at the path of E:\Lib\site-packages\sklearn\cluster)
+* To use: change the [_init_.py] file and add the [_dbscanDR.py] within the [cluster] folder (mine is at the path of E:\Lib\site-packages\sklearn\cluster)
   
