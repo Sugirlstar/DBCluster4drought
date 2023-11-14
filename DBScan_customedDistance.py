@@ -106,7 +106,7 @@ loaded_data = np.load("SPI2DBscantest.npz")
 # 从loaded_data中获取数组a
 spi_array_80 = loaded_data['spi_array_80']
 spi_array_80 = spi_array_80[0:40, 30:40, 40:50] #取小块测试
-# # 只画出低于阈值（-1）的SPI值,测试看看
+# 只画出低于阈值（-1）的SPI值,测试看看
 # drev = spi_array_80.copy()
 # drev[drev > (-1)] = np.nan
 # voxelFun(drev, "winter", "SPI<-1")  # 低于-1的
@@ -126,9 +126,10 @@ def custom_distance(point1, point2):
 
 z, x, y = np.where(~np.isnan(spi_array_80))
 data_points = np.column_stack([z, x, y, spi_array_80[z, x, y]])  # 获取数据点
+spi_c = data_points[:, 3]<(-1)
 
 start_time = time.time()
-db = DBSCAN(eps=np.sqrt(2), min_samples=10, metric=custom_distance)
+db = DBSCAN(eps=np.sqrt(2), min_samples=10, metric=custom_distance, spi_condition=spi_c)
 db.fit(data_points)
 end_time = time.time()
 elapsed_time = end_time - start_time
@@ -148,8 +149,8 @@ core_labels_array[z, x, y] = dbcorelabels
 labels_array[labels_array == -1] = np.nan
 core_labels_array[core_labels_array == -1] = np.nan
 
-np.savez('SPI2DBscantest_labels_array.npz', labels_array=labels_array) #所有分类
-np.savez('SPI2DBscantest_core_labels_array.npz', core_labels_array=core_labels_array) #核心
+#np.savez('SPI2DBscantest_labels_array.npz', labels_array=labels_array) #所有分类
+#np.savez('SPI2DBscantest_core_labels_array.npz', core_labels_array=core_labels_array) #核心
 
 labelwithV1 = spi_array_80.copy()
 labelwithV2 = spi_array_80.copy()
@@ -173,4 +174,4 @@ print("end")
 #endregion END
 
 
-# continue：源代码中设定v>-1不能做核心点
+# Done：源代码中设定v>-1不能做核心点(见_dbscanDR.py)
